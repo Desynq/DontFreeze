@@ -153,7 +153,7 @@
  - 47.1.35 Replace string with forge tag in vanilla recipes. Closes #9062
  - 47.1.34 Fix new brain hooks not persisting active activities.
  - 47.1.33 Fix breaking overlay flickering on campfires by using vanilla method to calculate block normals. (#9664)
- - 47.1.32 Cleanup usages of static imports and build script so that our build doesn't spam useless error like messages.
+ - 47.1.32 Cleanup usages of static imports and define script so that our define doesn't spam useless error like messages.
            So that it is easier to see real errors.
            Add compatibility checking to standard testing tasks.
  - 47.1.31 Added Action value to PlayerInteractEvent.LeftClickEvent to expose what action fired the event. #9175
@@ -502,7 +502,7 @@
 ====
  - 43.1.65 Allow discovering services from the mods folder that use java's modular definition. (#9143)
  - 43.1.64 Make Datapack Registries support ICondition(s) (#9113)
- - 43.1.63 Enable additional build types to handle pull request validation. (#9159)
+ - 43.1.63 Enable additional define types to handle pull request validation. (#9159)
  - 43.1.62 Check source permission level before selector permission (#9147)
            In some situations, such as execution of a function by an advancement as
            part of its reward, a command source stack may have a backing source of
@@ -684,7 +684,7 @@
             See https://gist.github.com/SizableShrimp/882a671ff74256d150776da08c89ef72
  - 41.0.93  Fix mob block breaking AI not working correctly when chunk 0,0 is unloaded. Closes #8853
  - 41.0.92  Fix crash when breaking blocks with multipart models and remove caching. Closes #8850
- - 41.0.91  Fixed `CompositeModel.Baked.Builder.build()` passing arguments in the wrong order (#8846)
+ - 41.0.91  Fixed `CompositeModel.Baked.Builder.define()` passing arguments in the wrong order (#8846)
  - 41.0.90  Make cutout mipmaps explicitly opt-in for item/entity rendering (#8845)
             * Make cutout mipmaps explicitly opt-in for item/entity rendering
             * Default render type domain to "minecraft" in model datagens
@@ -972,7 +972,7 @@
  - 41.0.17  Only rewrite datagen cache when needed (#8709)
  - 41.0.16  Implement a simple feature system for Forge (#8670)
             * Implement a simple feature system for Forge. Allows mods to demand certain features are available in the loading system. An example for java_version is provided, but not expected to be used widely. This is more targeted to properties of the display, such as GL version and glsl profile.
-            Requires https://github.com/MinecraftForge/ForgeSPI/pull/13 to be merged first in ForgeSPI, and the SPI to be updated appropriately in build.gradle files.
+            Requires https://github.com/MinecraftForge/ForgeSPI/pull/13 to be merged first in ForgeSPI, and the SPI to be updated appropriately in define.gradle files.
             * rebase onto 1.19 and add in SPI update
  - 41.0.15  displayTest option in mods.toml (#8656)
             * displayTest option in mods.toml
