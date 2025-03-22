@@ -32,7 +32,7 @@ public class MixinClientEventHandler {
      */
     @Overwrite(remap = false)
     public static void renderFogDensity(Camera camera, FogDensityCallback callback) {
-        if (!(camera.getEntity() instanceof Player player)) {
+        if (!(camera.getEntity() instanceof Player player) || player.isSpectator()) {
             return;
         }
 
