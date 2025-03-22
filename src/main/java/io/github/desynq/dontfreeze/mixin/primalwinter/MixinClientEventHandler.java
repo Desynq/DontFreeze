@@ -3,7 +3,7 @@ package io.github.desynq.dontfreeze.mixin.primalwinter;
 import com.alcatrazescapee.primalwinter.client.ClientEventHandler;
 import com.alcatrazescapee.primalwinter.platform.client.FogDensityCallback;
 import com.alcatrazescapee.primalwinter.util.Config;
-import io.github.desynq.dontfreeze.config.CommonConfig;
+import io.github.desynq.dontfreeze.config.ModConfig;
 import net.minecraft.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -53,7 +53,7 @@ public class MixinClientEventHandler {
         // Scale the output by the render distance, so changes to the render distance don't
         // visually affect the fog depth
         final float renderDistance = Minecraft.getInstance().gameRenderer.getRenderDistance();
-        final float renderDistanceAdjustment = (CommonConfig.fogRenderDistance.getValue() * 16f) / renderDistance;
+        final float renderDistanceAdjustment = (ModConfig.fogRenderDistance.getValue() * 16f) / renderDistance;
 
         // Smoothly interpolate fog towards the expected value - increasing faster than it decreases
         if (expectedFogDensity > prevFogDensity) {

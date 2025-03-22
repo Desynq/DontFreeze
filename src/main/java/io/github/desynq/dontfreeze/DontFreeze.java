@@ -1,7 +1,7 @@
 package io.github.desynq.dontfreeze;
 
 import com.mojang.logging.LogUtils;
-import io.github.desynq.dontfreeze.config.CommonConfig;
+import io.github.desynq.dontfreeze.config.ModConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.MinecraftServer;
@@ -15,7 +15,6 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -49,7 +48,7 @@ public class DontFreeze {
 
         modEventBus.addListener(this::addCreative);
 
-        context.registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
+        context.registerConfig(net.minecraftforge.fml.config.ModConfig.Type.COMMON, ModConfig.SPEC);
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
