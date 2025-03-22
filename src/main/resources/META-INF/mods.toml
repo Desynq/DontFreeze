@@ -43,11 +43,16 @@ authors="desynq" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''Modpack mod that modifies Primal Winter and makes survival more difficult
+Features:
 - Primal Winter fog is fixed and can't be cheesed with render distance
 - Snow layers take longer to mine in proportion to how stacked up they are
-- Powdered snow is more difficult to get out of and requires a shovel when stuck
+- Being in powder snow severely reduces mining speed
+- Powder snow requires a shovel to break when stuck inside of it
+- Powder snow can be broken faster using a shovel
+- Snowy block variants added by Primal Winter take longer to mine
 - Logs can't be mined without an axe
-- Berry bushes, cacti, melon, pumpkin, and sugar cane no longer generate naturally'''
+- Berry bushes, cacti, melon, pumpkin, and sugar cane no longer generate naturally
+- Data-driven item tag for items that prevent sinking in powder snow'''
 
 [[dependencies.dontfreeze]]
     modId="forge"

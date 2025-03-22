@@ -2,6 +2,7 @@ package io.github.desynq.dontfreeze.event;
 
 import io.github.desynq.dontfreeze.DontFreeze;
 import io.github.desynq.dontfreeze.config.ModConfig;
+import io.github.desynq.dontfreeze.registry.ModTagKeys;
 import io.github.desynq.dontfreeze.util.PlayerHelper;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.jetbrains.annotations.NotNull;
 
 @Mod.EventBusSubscriber(modid = DontFreeze.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModifyBreakSpeedEvent {
@@ -24,16 +26,27 @@ public class ModifyBreakSpeedEvent {
     private final Player player;
     private float currentSpeed;
 
-    private ModifyBreakSpeedEvent(PlayerEvent.BreakSpeed event) {
+    private ModifyBreakSpeedEvent(@NotNull final PlayerEvent.BreakSpeed event) {
         blockState = event.getState();
         player = event.getEntity();
         currentSpeed = event.getOriginalSpeed();
 
+        makeSnowyBlocksTakeLongerToMine();
         makeCumulativeSnowLayersTakeLongerToMine();
         makePowderSnowMoreDifficultToGetOutOf();
         makeLogsUnbreakableWithoutAxe();
         event.setNewSpeed(currentSpeed);
     }
+
+
+
+    private void makeSnowyBlocksTakeLongerToMine() {
+        if (blockState.is(ModTagKeys.SNOWY)) {
+            currentSpeed /= 1f + ModConfig.snowyBlocksMiningModifier.getValue().floatValue();
+        }
+    }
+
+
 
     private void makeCumulativeSnowLayersTakeLongerToMine() {
         if (blockState.is(Blocks.SNOW) && ModConfig.snowTakesLongerToMine.getValue()) {
@@ -42,18 +55,31 @@ public class ModifyBreakSpeedEvent {
         }
     }
 
-    // forces player to either use a shovel to mine powder snow when they're stuck in it
-    // alternatively they can also simply get out of the powder snow or mine blocks adjacent to the powder snow
-    // this effectively makes being fully in powder snow extremely dangerous if the player has no shovel
+
+
     private void makePowderSnowMoreDifficultToGetOutOf() {
         if (player.isInPowderSnow) {
-            float modifier = ModConfig.inPowderSnowBreakSpeed.getValue().floatValue();
-            currentSpeed *= 1f - modifier;
-            if (blockState.is(Blocks.POWDER_SNOW) && !PlayerHelper.isHoldingShovel(player)) {
-                currentSpeed = 0;
+            if (isMiningPowderSnowWithoutAShovel()) {
+                currentSpeed = 0f;
+            }
+            else {
+                currentSpeed /= 1f + ModConfig.inPowderSnowMiningModifier.getValue().floatValue();
             }
         }
+        else if (isMiningPowderSnowWithAShovel()) {
+            currentSpeed *= 2f;
+        }
     }
+
+    private boolean isMiningPowderSnowWithoutAShovel() {
+        return blockState.is(Blocks.POWDER_SNOW) && !PlayerHelper.isHoldingShovel(player);
+    }
+
+    private boolean isMiningPowderSnowWithAShovel() {
+        return blockState.is(Blocks.POWDER_SNOW) && PlayerHelper.isHoldingShovel(player);
+    }
+
+
 
     private void makeLogsUnbreakableWithoutAxe() {
         if (blockState.is(BlockTags.LOGS) && !PlayerHelper.isHoldingAxe(player)) {

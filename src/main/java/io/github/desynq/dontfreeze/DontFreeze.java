@@ -2,8 +2,10 @@ package io.github.desynq.dontfreeze;
 
 import com.mojang.logging.LogUtils;
 import io.github.desynq.dontfreeze.config.ModConfig;
+import io.github.desynq.dontfreeze.registry.ModTagKeys;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -35,6 +37,10 @@ public class DontFreeze {
 
     public static MinecraftServer SERVER;
 
+    public static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    }
+
     public DontFreeze(@NotNull FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
 
@@ -43,6 +49,7 @@ public class DontFreeze {
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
+        ModTagKeys.register();
 
         MinecraftForge.EVENT_BUS.register(this);
 

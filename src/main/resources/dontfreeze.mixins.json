@@ -4,6 +4,7 @@
   "package": "io.github.desynq.dontfreeze.mixin",
   "refmap": "dontfreeze.refmap.json",
   "mixins": [
+    "MixinItem"
   ],
   "client": [
   ],
