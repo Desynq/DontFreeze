@@ -47,8 +47,7 @@ description='''Modpack mod that modifies Primal Winter and makes survival more d
 - Snow layers take longer to mine in proportion to how stacked up they are
 - Powdered snow is more difficult to get out of and requires a shovel when stuck
 - Logs can't be mined without an axe
-- Berry bushes, cacti, melon, pumpkin, and sugar cane no longer generate naturally
-- Adds and changes recipes'''
+- Berry bushes, cacti, melon, pumpkin, and sugar cane no longer generate naturally'''
 
 [[dependencies.dontfreeze]]
     modId="forge"
