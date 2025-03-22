@@ -1,6 +1,6 @@
 modLoader="javafml"
 
-loaderVersion="[47,)"
+loaderVersion="${loader_version_range}"
 
 license="${mod_license}"
 
@@ -51,19 +51,19 @@ Features:
 [[dependencies."${mod_id}"]]
     modId="forge"
     mandatory=true
-    versionRange="[47,)"
+    versionRange="${forge_version_range}"
     ordering="NONE"
     side="BOTH"
 [[dependencies."${mod_id}"]]
     modId="minecraft"
     mandatory=true
-    versionRange="==1.20.1"
+    versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
 [[dependencies."${mod_id}"]]
     modId="primalwinter"
     mandatory=true
-    versionRange="==5.0.0"
+    versionRange="${primalwinter_version_range}"
     ordering="NONE"
     side="BOTH"
 
