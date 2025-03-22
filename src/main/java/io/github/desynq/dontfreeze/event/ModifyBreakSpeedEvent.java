@@ -3,6 +3,7 @@ package io.github.desynq.dontfreeze.event;
 import io.github.desynq.dontfreeze.DontFreeze;
 import io.github.desynq.dontfreeze.config.ModConfig;
 import io.github.desynq.dontfreeze.util.PlayerHelper;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
@@ -30,6 +31,7 @@ public class ModifyBreakSpeedEvent {
 
         makeCumulativeSnowLayersTakeLongerToMine();
         makePowderSnowMoreDifficultToGetOutOf();
+        makeLogsUnbreakableWithoutAxe();
         event.setNewSpeed(currentSpeed);
     }
 
@@ -50,6 +52,12 @@ public class ModifyBreakSpeedEvent {
             if (blockState.is(Blocks.POWDER_SNOW) && !PlayerHelper.isHoldingShovel(player)) {
                 currentSpeed = 0;
             }
+        }
+    }
+
+    private void makeLogsUnbreakableWithoutAxe() {
+        if (blockState.is(BlockTags.LOGS) && !PlayerHelper.isHoldingAxe(player)) {
+            currentSpeed = 0;
         }
     }
 }
