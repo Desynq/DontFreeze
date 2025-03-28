@@ -24,3 +24,6 @@ build
 
 # Files from Forge MDK
 forge*changelog.txt
+
+src/generated
+run-data

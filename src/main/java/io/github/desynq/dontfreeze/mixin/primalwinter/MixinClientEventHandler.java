@@ -3,7 +3,7 @@ package io.github.desynq.dontfreeze.mixin.primalwinter;
 import com.alcatrazescapee.primalwinter.client.ClientEventHandler;
 import com.alcatrazescapee.primalwinter.platform.client.FogDensityCallback;
 import com.alcatrazescapee.primalwinter.util.Config;
-import io.github.desynq.dontfreeze.config.ModConfig;
+import io.github.desynq.dontfreeze.config.proxy.ConfigProxy;
 import net.minecraft.Util;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ClientEventHandler.class)
-public class MixinClientEventHandler {
+public final class MixinClientEventHandler {
 
     @Shadow(remap = false)
     private static float prevFogDensity;
@@ -47,23 +47,27 @@ public class MixinClientEventHandler {
         final Level level = player.level();
         if (Config.INSTANCE.isWinterDimension(level.dimension())) {
             final int light = level.getBrightness(LightLayer.SKY, BlockPos.containing(player.getEyePosition()));
+            // map light level to float between 0f and 1f
             expectedFogDensity = Mth.clampedMap(light, 0f, 15f, 0f, 1f);
         }
 
         // Scale the output by the render distance, so changes to the render distance don't
         // visually affect the fog depth
         final float renderDistance = Minecraft.getInstance().gameRenderer.getRenderDistance();
-        final float renderDistanceAdjustment = (ModConfig.fogRenderDistance.getValue() * 16f) / renderDistance;
+
+        final float renderDistanceAdjustment = (ConfigProxy.getFogRenderDistance() * 16f) / renderDistance;
 
         // Smoothly interpolate fog towards the expected value - increasing faster than it decreases
         if (expectedFogDensity > prevFogDensity) {
             prevFogDensity = Math.min(prevFogDensity + 4f * deltaTick, expectedFogDensity);
-        } else if (expectedFogDensity < prevFogDensity) {
+        }
+        else if (expectedFogDensity < prevFogDensity) {
             prevFogDensity = Math.max(prevFogDensity - deltaTick, expectedFogDensity);
         }
 
+        // Immediately cancel fog if there's another fog effect going on
         if (camera.getFluidInCamera() != FogType.NONE) {
-            prevFogDensity = -1; // Immediately cancel fog if there's another fog effect going on
+            prevFogDensity = -1;
             prevFogTick = -1;
         }
 

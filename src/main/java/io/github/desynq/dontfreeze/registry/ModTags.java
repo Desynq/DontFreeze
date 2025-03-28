@@ -6,7 +6,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ModTagKeys {
+public final class ModTags {
 
     public static final TagKey<Item> CAN_WALK_ON_POWDER_SNOW = TagKey.create(
             ForgeRegistries.ITEMS.getRegistryKey(),

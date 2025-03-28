@@ -1,8 +1,8 @@
 package io.github.desynq.dontfreeze;
 
 import com.mojang.logging.LogUtils;
-import io.github.desynq.dontfreeze.config.ModConfig;
-import io.github.desynq.dontfreeze.registry.ModTagKeys;
+import io.github.desynq.dontfreeze.config.ConfigManager;
+import io.github.desynq.dontfreeze.registry.ModTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -22,11 +22,13 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 @Mod(DontFreeze.MOD_ID)
-public class DontFreeze {
+public final class DontFreeze {
+
     public static final String MOD_ID = "dontfreeze";
     public static final Logger LOGGER = LogUtils.getLogger();
 
@@ -37,25 +39,29 @@ public class DontFreeze {
 
     public static MinecraftServer SERVER;
 
-    public static ResourceLocation id(String path) {
+    @Contract("_ -> new")
+    public static @NotNull ResourceLocation id(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 
     public DontFreeze(@NotNull FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
 
+        ConfigManager.initialize();
+        ConfigManager.register(context);
+
+        modEventBus.addListener(ConfigManager::onConfigLoad);
+        modEventBus.addListener(ConfigManager::onConfigReload);
         modEventBus.addListener(this::commonSetup);
 
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
-        ModTagKeys.register();
+        ModTags.register();
 
         MinecraftForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative);
-
-        context.registerConfig(net.minecraftforge.fml.config.ModConfig.Type.COMMON, ModConfig.SPEC);
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {

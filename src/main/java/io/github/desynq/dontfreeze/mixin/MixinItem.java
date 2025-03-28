@@ -1,6 +1,6 @@
 package io.github.desynq.dontfreeze.mixin;
 
-import io.github.desynq.dontfreeze.registry.ModTagKeys;
+import io.github.desynq.dontfreeze.registry.ModTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -12,10 +12,10 @@ import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(Item.class)
 @Implements(@Interface(iface = IForgeItem.class, prefix = "custom$"))
-public class MixinItem {
+public final class MixinItem {
 
     public boolean custom$canWalkOnPowderedSnow(@NotNull ItemStack stack, LivingEntity wearer)
     {
-        return stack.is(ModTagKeys.CAN_WALK_ON_POWDER_SNOW);
+        return stack.is(ModTags.CAN_WALK_ON_POWDER_SNOW);
     }
 }
